@@ -3,216 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vue计算器</title>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .calculator {
-            background-color: #fff;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            padding: 25px;
-            width: 320px;
-        }
-
-        .display {
-            background-color: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: right;
-            min-height: 80px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .previous-operand {
-            color: #6c757d;
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-
-        .current-operand {
-            color: #212529;
-            font-size: 28px;
-            font-weight: bold;
-            word-wrap: break-word;
-        }
-
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
-
-        button {
-            border: none;
-            border-radius: 10px;
-            padding: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        .number {
-            background-color: #f8f9fa;
-            color: #212529;
-        }
-
-        .operator {
-            background-color: #4361ee;
-            color: white;
-        }
-
-        .equals {
-            background-color: #06d6a0;
-            color: white;
-            grid-column: span 2;
-        }
-
-        .clear {
-            background-color: #ef476f;
-            color: white;
-        }
-
-        .delete {
-            background-color: #ffd166;
-            color: #212529;
-        }
-
-        .span-two {
-            grid-column: span 2;
-        }
-    </style>
+    <title>Web前端学习笔记</title>
 </head>
 <body>
-    <div id="app">
-        <div class="calculator">
-            <div class="display">
-                <div class="previous-operand">{{ previousOperandDisplay }}</div>
-                <div class="current-operand">{{ currentOperand || '0' }}</div>
-            </div>
-
-            <div class="buttons">
-                <button class="clear" @click="clearDisplay">AC</button>
-                <button class="delete" @click="deleteLast">DEL</button>
-                <button class="operator" @click="chooseOperator('÷')">÷</button>
-                <button class="operator" @click="chooseOperator('×')">×</button>
-
-                <button class="number" @click="appendNumber('7')">7</button>
-                <button class="number" @click="appendNumber('8')">8</button>
-                <button class="number" @click="appendNumber('9')">9</button>
-                <button class="operator" @click="chooseOperator('-')">-</button>
-
-                <button class="number" @click="appendNumber('4')">4</button>
-                <button class="number" @click="appendNumber('5')">5</button>
-                <button class="number" @click="appendNumber('6')">6</button>
-                <button class="operator" @click="chooseOperator('+')">+</button>
-
-                <button class="number" @click="appendNumber('1')">1</button>
-                <button class="number" @click="appendNumber('2')">2</button>
-                <button class="number" @click="appendNumber('3')">3</button>
-                <button class="operator" @click="chooseOperator('.')">.</button>
-
-                <button class="number span-two" @click="appendNumber('0')">0</button>
-                <button class="equals" @click="compute">=</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        new Vue({
-            el: '#app',
-            data: {
-                currentOperand: '',
-                previousOperand: '',
-                operation: undefined
-            },
-            computed: {
-                previousOperandDisplay() {
-                    return this.operation !== undefined ?
-                           this.previousOperand + ' ' + this.operation :
-                           '';
-                }
-            },
-            methods: {
-                appendNumber(number) {
-                    if (number === '.' && this.currentOperand.includes('.')) return;
-                    this.currentOperand = this.currentOperand.toString() + number.toString();
-                },
-                chooseOperator(operator) {
-                    if (this.currentOperand === '') return;
-                    if (this.operation !== undefined) {
-                        this.compute();
-                    }
-                    this.operation = operator;
-                    this.previousOperand = this.currentOperand;
-                    this.currentOperand = '';
-                },
-                compute() {
-                    let computation;
-                    const prev = parseFloat(this.previousOperand);
-                    const current = parseFloat(this.currentOperand);
-
-                    if (isNaN(prev) || isNaN(current)) return;
-
-                    switch (this.operation) {
-                        case '+':
-                            computation = prev + current;
-                            break;
-                        case '-':
-                            computation = prev - current;
-                            break;
-                        case '×':
-                            computation = prev * current;
-                            break;
-                        case '÷':
-                            computation = prev / current;
-                            break;
-                        default:
-                            return;
-                    }
-
-                    this.currentOperand = computation;
-                    this.operation = undefined;
-                    this.previousOperand = '';
-                },
-                clearDisplay() {
-                    this.currentOperand = '';
-                    this.previousOperand = '';
-                    this.operation = undefined;
-                },
-                deleteLast() {
-                    this.currentOperand = this.currentOperand.toString().slice(0, -1);
-                }
-            }
-        });
-    </script>
+    <h1>Web前端学习笔记</h1>
+    <p>说明：按知识点分类的HTML、CSS、JavaScript、Markdown学习示例，每个页面都可以直接用浏览器打开</p>
+    
+    <h2>1. HTML（24篇）</h2>
+    <ul>
+        <li><a href="HTML/01-%E9%AA%A8%E6%9E%B6.html">HTML5骨架</a></li>
+        <li><a href="HTML/02-%E6%A0%87%E9%A2%98%E4%B8%8E%E6%AE%B5%E8%90%BD.html">HTML5标题与段落</a></li>
+        <li><a href="HTML/03-%E6%96%87%E6%9C%AC%E4%B8%8E%E6%8E%92%E7%89%88%E8%BF%9B%E9%98%B6.html">HTML5文本与排版进阶</a></li>
+        <li><a href="HTML/04-%E6%8D%A2%E8%A1%8Cbr%E4%B8%8E%E6%B0%B4%E5%B9%B3%E7%BA%BFhr.html">HTML5换行br与水平线hr</a></li>
+        <li><a href="HTML/05-%E6%B3%A8%E9%87%8A%E4%B8%8E%E7%89%B9%E6%AE%8A%E7%AC%A6%E5%8F%B7.html">HTML5注释与特殊符号</a></li>
+        <li><a href="HTML/06-%E8%B6%85%E9%93%BE%E6%8E%A5a.html">HTML5超链接a</a></li>
+        <li><a href="HTML/07-%E5%9B%BE%E7%89%87img.html">HTML5图片img</a></li>
+        <li><a href="HTML/08-%E5%88%97%E8%A1%A8.html">HTML5列表</a></li>
+        <li><a href="HTML/09-%E8%A1%A8%E6%A0%BCtable.html">HTML5表格table</a></li>
+        <li><a href="HTML/10-%E5%9D%97%E7%BA%A7%E7%9B%92%E5%AD%90div.html">HTML5块级盒子div</a></li>
+        <li><a href="HTML/11-%E8%A1%8C%E5%86%85%E5%85%83%E7%B4%A0span.html">HTML5行内元素span</a></li>
+        <li><a href="HTML/12-%E8%AF%AD%E4%B9%89%E5%8C%96%E6%A0%87%E7%AD%BE.html">HTML5语义化标签</a></li>
+        <li><a href="HTML/13-%E5%85%A8%E5%B1%80%E5%B1%9E%E6%80%A7%E4%B8%8E%E8%BF%9B%E9%98%B6%E7%94%A8%E6%B3%95.html">HTML5全局属性与进阶用法</a></li>
+        <li><a href="HTML/14-%E5%A4%9A%E5%AA%92%E4%BD%93%E4%B8%8E%E5%B5%8C%E5%85%A5.html">HTML5多媒体与嵌入</a></li>
+        <li><a href="HTML/15-%E8%BE%93%E5%85%A5%E6%A1%86input.html">HTML5输入框input</a></li>
+        <li><a href="HTML/16-%E4%B8%8B%E6%8B%89%E9%80%89%E6%8B%A9%E6%A1%86select.html">HTML5下拉选择框select</a></li>
+        <li><a href="HTML/17-%E6%96%87%E6%9C%AC%E5%9F%9Ftextarea.html">HTML5文本域textarea</a></li>
+        <li><a href="HTML/18-%E6%8C%89%E9%92%AEbutton.html">HTML5按钮button</a></li>
+        <li><a href="HTML/19-%E8%A1%A8%E5%8D%95form.html">HTML5表单form</a></li>
+        <li><a href="HTML/20-%E8%A1%A8%E5%8D%95%E8%BF%9B%E9%98%B6.html">HTML5表单进阶</a></li>
+        <li><a href="HTML/21-%E4%BA%A4%E4%BA%92%E5%85%83%E7%B4%A0details%E4%B8%8Edialog.html">HTML5交互元素details与dialog</a></li>
+        <li><a href="HTML/22-%E8%BF%9B%E5%BA%A6%E6%9D%A1progress%E4%B8%8Emeter.html">HTML5进度条progress与度量meter</a></li>
+        <li><a href="HTML/23-%E5%9B%BE%E7%89%87%E8%BF%9B%E9%98%B6figure%E4%B8%8Epicture.html">HTML5图片进阶figure与picture</a></li>
+        <li><a href="HTML/24-%E6%97%A0%E9%9A%9C%E7%A2%8D%E5%9F%BA%E7%A1%80%E4%B8%8EARIA.html">HTML5无障碍基础与ARIA</a></li>
+    </ul>
+    
+    <h2>2. CSS（10个主题）</h2>
+    <ul>
+        <li><a href="CSS/Flexbox%E5%B8%83%E5%B1%80/%E6%96%87%E6%9C%AC.html">CSS Flexbox布局</a></li>
+        <li><a href="CSS/Grid%E5%B8%83%E5%B1%80/%E6%96%87%E6%9C%AC.html">CSS Grid布局</a></li>
+        <li><a href="CSS/%E5%86%85%E8%81%94%E8%A1%8C%E5%86%85%E6%A0%B7%E5%BC%8F/%E6%96%87%E6%9C%AC.html">CSS内联行内样式</a></li>
+        <li><a href="CSS/%E5%86%85%E9%83%A8%E6%A0%B7%E5%BC%8F/%E6%96%87%E6%9C%AC.html">CSS内部样式</a></li>
+        <li><a href="CSS/%E5%93%8D%E5%BA%94%E5%BC%8F%E8%AE%BE%E8%AE%A1/%E6%96%87%E6%9C%AC.html">CSS响应式设计</a></li>
+        <li><a href="CSS/%E5%A4%96%E9%83%A8%E6%A0%B7%E5%BC%8F/%E6%96%87%E6%9C%AC.html">CSS外部样式</a></li>
+        <li><a href="CSS/%E6%B5%AE%E5%8A%A8%E4%B8%8E%E5%AE%9A%E4%BD%8D/%E6%96%87%E6%9C%AC.html">CSS浮动与定位</a></li>
+        <li><a href="CSS/%E7%9B%92%E6%A8%A1%E5%9E%8B/%E6%96%87%E6%9C%AC.html">CSS盒模型</a></li>
+        <li><a href="CSS/%E8%BF%87%E6%B8%A1%E4%B8%8E%E5%8A%A8%E7%94%BB/%E6%96%87%E6%9C%AC.html">CSS过渡与动画</a></li>
+        <li><a href="CSS/%E9%80%89%E6%8B%A9%E5%99%A8/%E6%96%87%E6%9C%AC.html">CSS选择器</a></li>
+    </ul>
+    
+    <h2>3. JavaScript（15篇）</h2>
+    <ul>
+        <li><a href="JavaScript/01-%E5%8F%98%E9%87%8F%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.html">JavaScript 变量与数据类型</a></li>
+        <li><a href="JavaScript/02-%E8%BF%90%E7%AE%97%E7%AC%A6.html">JavaScript 运算符</a></li>
+        <li><a href="JavaScript/03-%E6%9D%A1%E4%BB%B6%E8%AF%AD%E5%8F%A5.html">JavaScript 条件语句</a></li>
+        <li><a href="JavaScript/04-%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5.html">JavaScript 循环语句</a></li>
+        <li><a href="JavaScript/05-%E5%87%BD%E6%95%B0.html">JavaScript 函数</a></li>
+        <li><a href="JavaScript/06-%E6%95%B0%E7%BB%84.html">JavaScript 数组</a></li>
+        <li><a href="JavaScript/07-%E5%AF%B9%E8%B1%A1.html">JavaScript 对象</a></li>
+        <li><a href="JavaScript/08-%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86.html">JavaScript 事件处理</a></li>
+        <li><a href="JavaScript/09-DOM%E6%93%8D%E4%BD%9C.html">JavaScript DOM操作</a></li>
+        <li><a href="JavaScript/10-%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B.html">JavaScript 异步编程</a></li>
+        <li><a href="JavaScript/11-%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8.html">JavaScript 本地存储</a></li>
+        <li><a href="JavaScript/12-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86.html">JavaScript 错误处理</a></li>
+        <li><a href="JavaScript/13-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.html">JavaScript 正则表达式</a></li>
+        <li><a href="JavaScript/14-%E7%8E%B0%E4%BB%A3JavaScript.html">JavaScript 现代特性</a></li>
+        <li><a href="JavaScript/15-%E6%A8%A1%E5%9D%97%E5%8C%96%E5%BC%80%E5%8F%91.html">JavaScript 模块化开发</a></li>
+    </ul>
+    
+    <h2>4. Markdown（4篇）</h2>
+    <ul>
+        <li><a href="Markdown/Markdown%E4%BB%A3%E7%A0%81%E4%B8%8E%E5%BC%95%E7%94%A8.md">Markdown代码与引用</a></li>
+        <li><a href="Markdown/Markdown%E5%88%97%E8%A1%A8%E4%B8%8E%E9%93%BE%E6%8E%A5.md">Markdown列表与链接</a></li>
+        <li><a href="Markdown/Markdown%E6%A0%87%E9%A2%98%E4%B8%8E%E6%96%87%E6%9C%AC.md">Markdown标题与文本</a></li>
+        <li><a href="Markdown/Markdown%E8%A1%A8%E6%A0%BC%E4%B8%8E%E5%85%B6%E4%BB%96.md">Markdown表格与其他</a></li>
+    </ul>
+    
+    <h3>使用提示</h3>
+    <p>说明：JavaScript第15篇使用ES模块，需通过本地服务器打开（如VS Code的Live Server，端口5501），直接双击打开会因跨域限制无法加载模块</p>
 </body>
 </html>
