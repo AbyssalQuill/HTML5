@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 事件循环</title>
+</head>
+<body>
+    <h1>JavaScript 事件循环</h1>
+    
+    <h2>1. 单线程与异步</h2>
+    
+    <h3>JavaScript 是单线程的</h3>
+    <p>说明：同一时间只能执行一段代码；耗时操作（定时器、网络请求）交给浏览器处理，完成后把回调放进队列等待执行</p>
+    
+    <h2>2. 调用栈与任务队列</h2>
+    
+    <h3>宏任务与微任务</h3>
+    <pre>宏任务：setTimeout、setInterval、事件回调、I/O
+微任务：Promise.then、queueMicrotask、MutationObserver</pre>
+    <p>说明：每执行完一个宏任务，会先清空所有微任务，再进入下一个宏任务</p>
+    
+    <h3>执行顺序示例</h3>
+    <pre>console.log("1 同步");
+setTimeout(() =&gt; console.log("2 宏任务"), 0);
+Promise.resolve().then(() =&gt; console.log("3 微任务"));
+console.log("4 同步");
+// 输出顺序：1 4 3 2</pre>
+    <p>说明：先执行同步代码，再执行微任务，最后执行宏任务，即使setTimeout的延时是0</p>
+    
+    <h3>async/await 的顺序</h3>
+    <pre>async function f() {
+    console.log("a");
+    await null;
+    console.log("b");   // await之后的代码相当于微任务
+}
+f();
+console.log("c");
+// 输出顺序：a c b</pre>
+    <p>说明：await之前的代码同步执行，await之后的部分会作为微任务排队</p>
+    
+    <h2>3. 常见问题</h2>
+    
+    <h3>定时器并不精确</h3>
+    <pre>setTimeout(fn, 100);</pre>
+    <p>说明：100毫秒只是“至少等待”的时间，如果调用栈忙，回调会更晚才执行</p>
+    
+    <h3>长任务会阻塞页面</h3>
+    <pre>while (Date.now() &lt; end) {}  // 页面会卡死</pre>
+    <p>说明：长时间的同步循环会阻塞渲染和事件响应；可以拆分任务、使用Web Worker，或用requestAnimationFrame配合动画</p>
+    
+    <h2>查看输出</h2>
+    <p>打开控制台查看输出，浏览器按F12</p>
+    <script>
+        console.log("1 同步");
+        setTimeout(() => console.log("2 宏任务"), 0);
+        Promise.resolve().then(() => console.log("3 微任务"));
+        console.log("4 同步");
+
+        async function f() {
+            console.log("a");
+            await null;
+            console.log("b");
+        }
+        setTimeout(() => {
+            console.log("----- async/await 顺序 -----");
+            f();
+            console.log("c");
+        }, 50);
+    </script>
+</body>
+</html>

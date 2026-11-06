@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>现代CSS与暗色模式</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>现代CSS与暗色模式</h1>
+    
+    <h3>1. :is() 简化选择器</h3>
+    <div class="is-demo">
+        <h4>标题</h4>
+        <p>段落</p>
+    </div>
+    <p>说明：:is(h4, p)匹配其中任一选择器，避免重复书写长选择器；权重取参数中最高的</p>
+    
+    <h3>2. :where() 零权重</h3>
+    <div class="where-demo">
+        <p>:where不增加权重，容易被覆盖</p>
+        <p class="override">这一行覆盖了:where的颜色</p>
+    </div>
+    <p>说明：:where()用法同:is()，但权重为0，适合写可被轻松覆盖的基础样式</p>
+    
+    <h3>3. :has() 父选择器</h3>
+    <div class="has-demo">
+        <p>没有图片的卡片</p>
+    </div>
+    <div class="has-demo">
+        <p>含有标记的卡片</p>
+        <span class="mark">★</span>
+    </div>
+    <p>说明：div:has(.mark)选中包含.mark后代的div，可以根据子元素决定父元素样式</p>
+    
+    <h3>4. CSS嵌套</h3>
+    <div class="nest-demo">
+        <p>嵌套写法的段落</p>
+    </div>
+    <p>说明：新版浏览器支持在规则内部直接嵌套子选择器，用&amp;表示当前选择器，不再需要预处理器</p>
+    
+    <h3>5. aspect-ratio 宽高比</h3>
+    <div class="ratio-demo">16:9</div>
+    <p>说明：aspect-ratio: 16 / 9设置宽高比，高度按宽度自动计算，适合视频、封面图</p>
+    
+    <h3>6. gap 与 inset</h3>
+    <div class="inset-demo"><span>inset:0 铺满父元素</span></div>
+    <p>说明：inset: 0是top、right、bottom、left都为0的简写；flex和grid中用gap设置间距</p>
+    
+    <h3>7. 暗色模式</h3>
+    <div class="theme-demo">跟随系统：浅色时白底黑字，深色时黑底白字</div>
+    <p>说明：@media (prefers-color-scheme: dark)检测系统主题，配合CSS变量切换颜色最方便</p>
+    
+    <h3>8. color-scheme</h3>
+    <p>说明：在:root设置color-scheme: light dark，浏览器会自动调整表单控件、滚动条等默认颜色</p>
+</body>
+</html>

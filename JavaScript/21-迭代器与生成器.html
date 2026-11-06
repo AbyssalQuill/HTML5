@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 迭代器与生成器</title>
+</head>
+<body>
+    <h1>JavaScript 迭代器与生成器</h1>
+    
+    <h2>1. 迭代器</h2>
+    
+    <h3>可迭代对象</h3>
+    <pre>const arr = [10, 20, 30];
+const it = arr[Symbol.iterator]();
+it.next();  // { value: 10, done: false }
+it.next();  // { value: 20, done: false }</pre>
+    <p>说明：数组、字符串、Map、Set等都是可迭代对象，for...of、展开运算符都依赖这套协议</p>
+    
+    <h3>自定义迭代器</h3>
+    <pre>const range = {
+    from: 1, to: 3,
+    [Symbol.iterator]() {
+        let cur = this.from, end = this.to;
+        return {
+            next: () =&gt; cur &lt;= end
+                ? { value: cur++, done: false }
+                : { value: undefined, done: true }
+        };
+    }
+};
+[...range];  // [1, 2, 3]</pre>
+    <p>说明：只要对象有[Symbol.iterator]方法，并返回带next()的对象，就可以被for...of遍历</p>
+    
+    <h2>2. 生成器</h2>
+    
+    <h3>function* 与 yield</h3>
+    <pre>function* gen() {
+    yield 1;
+    yield 2;
+    return 3;
+}
+const g = gen();
+g.next();  // { value: 1, done: false }
+g.next();  // { value: 2, done: false }
+g.next();  // { value: 3, done: true }</pre>
+    <p>说明：生成器函数调用后不会立即执行，每次next()运行到下一个yield暂停，状态自动保存</p>
+    
+    <h3>用生成器简化迭代器</h3>
+    <pre>const range2 = {
+    from: 1, to: 3,
+    *[Symbol.iterator]() {
+        for (let i = this.from; i &lt;= this.to; i++) yield i;
+    }
+};</pre>
+    <p>说明：用*[Symbol.iterator]写法，几行代码即可替代手写的迭代器对象</p>
+    
+    <h3>无限序列</h3>
+    <pre>function* naturals() {
+    let n = 1;
+    while (true) yield n++;
+}</pre>
+    <p>说明：生成器是惰性的，只在需要时才计算，所以可以表示无限序列，使用时用break或手动取前几个</p>
+    
+    <h3>yield* 委托</h3>
+    <pre>function* both() {
+    yield* [1, 2];
+    yield* "ab";
+}
+[...both()];  // [1, 2, "a", "b"]</pre>
+    <p>说明：yield*把迭代委托给另一个可迭代对象</p>
+    
+    <h2>查看输出</h2>
+    <p>打开控制台查看输出，浏览器按F12</p>
+    <script>
+        const arr = [10, 20, 30];
+        const it = arr[Symbol.iterator]();
+        console.log(it.next(), it.next());
+
+        const range = {
+            from: 1, to: 3,
+            [Symbol.iterator]() {
+                let cur = this.from, end = this.to;
+                return {
+                    next: () => cur <= end
+                        ? { value: cur++, done: false }
+                        : { value: undefined, done: true }
+                };
+            }
+        };
+        console.log("自定义迭代器:", [...range]);
+
+        function* gen() {
+            yield 1;
+            yield 2;
+            return 3;
+        }
+        const g = gen();
+        console.log(g.next(), g.next(), g.next());
+
+        const range2 = {
+            from: 1, to: 3,
+            *[Symbol.iterator]() {
+                for (let i = this.from; i <= this.to; i++) yield i;
+            }
+        };
+        console.log("生成器版:", [...range2]);
+
+        function* naturals() {
+            let n = 1;
+            while (true) yield n++;
+        }
+        const nat = naturals();
+        console.log("无限序列前5个:", [nat.next().value, nat.next().value, nat.next().value, nat.next().value, nat.next().value]);
+
+        function* both() {
+            yield* [1, 2];
+            yield* "ab";
+        }
+        console.log("yield*:", [...both()]);
+    </script>
+</body>
+</html>

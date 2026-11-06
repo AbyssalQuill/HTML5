@@ -6,9 +6,9 @@
 
 - `index.html` - 学习目录页，从这里进入所有内容
 - `HTML/` - HTML5 基础到进阶，24 篇，数字前缀按学习顺序编号
-- `CSS/` - CSS 10 个主题，每个主题一个文件夹（`文本.html` + `style.css`）
-- `JavaScript/` - JavaScript 15 篇，详见该目录下的 README
-- `Markdown/` - Markdown 语法 4 篇
+- `CSS/` - CSS 14 个主题，数字前缀按学习顺序编号，每个主题一个文件夹（`index.html` + `style.css`）
+- `JavaScript/` - JavaScript 23 篇，详见该目录下的 README
+- `Markdown/` - Markdown 语法 5 篇
 
 ## 页面格式
 

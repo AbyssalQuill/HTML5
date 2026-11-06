@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS伪类与伪元素</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>CSS伪类与伪元素</h1>
+    
+    <h3>1. 链接状态伪类</h3>
+    <a class="link-demo" href="#">鼠标悬停和点击试试</a>
+    <p>说明：:link未访问、:visited已访问、:hover悬停、:active按下，书写顺序建议LVHA</p>
+    
+    <h3>2. 表单状态伪类</h3>
+    <input class="input-demo" type="text" placeholder="点击聚焦">
+    <input class="input-demo" type="text" value="只读内容" readonly>
+    <input class="input-demo" type="text" placeholder="禁用" disabled>
+    <p>说明：:focus聚焦、:disabled禁用、:read-only只读、:checked选中、:required必填</p>
+    
+    <h3>3. 结构伪类</h3>
+    <ul class="list-demo">
+        <li>第1项</li>
+        <li>第2项</li>
+        <li>第3项</li>
+        <li>第4项</li>
+        <li>第5项</li>
+    </ul>
+    <p>说明：:first-child首个、:last-child最后一个、:nth-child(2n)偶数项、:nth-child(odd)奇数项</p>
+    
+    <h3>4. 否定伪类 :not()</h3>
+    <ul class="not-demo">
+        <li>普通项</li>
+        <li class="skip">被排除的项</li>
+        <li>普通项</li>
+    </ul>
+    <p>说明：:not(选择器)选中不匹配括号内选择器的元素</p>
+    
+    <h3>5. ::before 与 ::after</h3>
+    <p class="quote">伪元素插入的内容</p>
+    <p>说明：::before在内容前、::after在内容后插入，必须设置content属性（可以为空字符串）</p>
+    
+    <h3>6. ::first-letter 与 ::first-line</h3>
+    <p class="first-demo">首字下沉效果：这段文字的第一个字会被放大。伪元素可以选中文本的一部分。</p>
+    <p>说明：::first-letter选中首字符，::first-line选中第一行</p>
+    
+    <h3>7. ::placeholder 与 ::selection</h3>
+    <input class="ph-demo" type="text" placeholder="占位符变色了">
+    <p class="sel-demo">用鼠标选中这段文字试试</p>
+    <p>说明：::placeholder修改占位文字样式，::selection修改选中文本的样式</p>
+    
+    <h3>8. 伪类与伪元素的区别</h3>
+    <p>说明：伪类（单冒号）选择元素的某种状态；伪元素（双冒号）选择或创建元素的某个部分</p>
+</body>
+</html>

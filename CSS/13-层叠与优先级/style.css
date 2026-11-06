@@ -1,0 +1,48 @@
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+h3 {
+    color: #666;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+p {
+    color: #555;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+.same-a {
+    color: red;
+}
+.same-a {
+    color: green;
+}
+#weight-id {
+    color: red;
+}
+.weight-class {
+    color: green;
+}
+.inline-demo {
+    color: blue;
+}
+.important-demo {
+    color: orange !important;
+}
+.inherit-parent {
+    color: #4361ee;
+    font-size: 18px;
+    border: 1px dashed #4361ee;
+    padding: 10px;
+}
+.inherit-child {
+    font-size: inherit;
+    color: inherit;
+}
+.inherit-none {
+    color: initial;
+    font-size: inherit;
+}

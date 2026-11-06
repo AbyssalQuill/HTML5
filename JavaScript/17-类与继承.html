@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 类与继承</title>
+</head>
+<body>
+    <h1>JavaScript 类与继承</h1>
+    
+    <h2>1. class 基础</h2>
+    
+    <h3>定义类</h3>
+    <pre>class Person {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    introduce() {
+        return `我是${this.name}，${this.age}岁`;
+    }
+}
+const p = new Person("张三", 18);
+p.introduce();</pre>
+    <p>说明：constructor在new时自动调用；方法写在类里，所有实例共享</p>
+    
+    <h3>静态方法</h3>
+    <pre>class MathUtil {
+    static square(n) { return n * n; }
+}
+MathUtil.square(5);  // 25</pre>
+    <p>说明：static方法属于类本身，通过类名调用，不能通过实例调用</p>
+    
+    <h3>getter 与 setter</h3>
+    <pre>class Circle {
+    constructor(r) { this.r = r; }
+    get area() { return Math.PI * this.r ** 2; }
+    set radius(v) { this.r = v; }
+}</pre>
+    <p>说明：getter像属性一样读取，setter像属性一样赋值，可以在其中加入计算或校验</p>
+    
+    <h3>私有字段</h3>
+    <pre>class Wallet {
+    #balance = 0;
+    add(n) { this.#balance += n; }
+    get balance() { return this.#balance; }
+}</pre>
+    <p>说明：以#开头的字段是真正的私有，类外部访问会直接报语法错误</p>
+    
+    <h2>2. 继承</h2>
+    
+    <h3>extends 与 super</h3>
+    <pre>class Student extends Person {
+    constructor(name, age, school) {
+        super(name, age);
+        this.school = school;
+    }
+    introduce() {
+        return super.introduce() + `，就读于${this.school}`;
+    }
+}</pre>
+    <p>说明：extends继承父类；子类构造函数必须先调用super()再使用this；super.方法()调用父类方法</p>
+    
+    <h3>instanceof 判断</h3>
+    <pre>const s = new Student("李四", 20, "某大学");
+s instanceof Student;  // true
+s instanceof Person;   // true</pre>
+    <p>说明：instanceof检查对象的原型链上是否有该类的原型</p>
+    
+    <h2>3. 原型链</h2>
+    
+    <h3>class 的本质</h3>
+    <pre>typeof Person;                                  // "function"
+Object.getPrototypeOf(p) === Person.prototype;  // true</pre>
+    <p>说明：class是原型继承的语法糖，方法实际存放在Person.prototype上，属性查找沿原型链向上</p>
+    
+    <h2>查看输出</h2>
+    <p>打开控制台查看输出，浏览器按F12</p>
+    <script>
+        class Person {
+            constructor(name, age) {
+                this.name = name;
+                this.age = age;
+            }
+            introduce() {
+                return `我是${this.name}，${this.age}岁`;
+            }
+        }
+        class Student extends Person {
+            constructor(name, age, school) {
+                super(name, age);
+                this.school = school;
+            }
+            introduce() {
+                return super.introduce() + `，就读于${this.school}`;
+            }
+        }
+        class MathUtil {
+            static square(n) { return n * n; }
+        }
+        class Circle {
+            constructor(r) { this.r = r; }
+            get area() { return Math.PI * this.r ** 2; }
+        }
+        class Wallet {
+            #balance = 0;
+            add(n) { this.#balance += n; }
+            get balance() { return this.#balance; }
+        }
+
+        const p = new Person("张三", 18);
+        const s = new Student("李四", 20, "某大学");
+        console.log(p.introduce());
+        console.log(s.introduce());
+        console.log("静态方法:", MathUtil.square(5));
+        console.log("面积:", new Circle(2).area.toFixed(2));
+        const w = new Wallet();
+        w.add(30);
+        console.log("私有字段余额:", w.balance);
+        console.log("s instanceof Person:", s instanceof Person);
+        console.log("原型:", Object.getPrototypeOf(p) === Person.prototype);
+    </script>
+</body>
+</html>

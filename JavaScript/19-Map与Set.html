@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Map与Set</title>
+</head>
+<body>
+    <h1>JavaScript Map与Set</h1>
+    
+    <h2>1. Map</h2>
+    
+    <h3>创建与读写</h3>
+    <pre>const map = new Map();
+map.set("name", "张三");
+map.set(1, "数字键");
+map.get("name");   // "张三"
+map.has(1);        // true
+map.size;          // 2
+map.delete(1);</pre>
+    <p>说明：Map是键值对集合，与普通对象不同，键可以是任意类型，并且会记住插入顺序</p>
+    
+    <h3>遍历</h3>
+    <pre>for (const [key, value] of map) {
+    console.log(key, value);
+}
+map.forEach((value, key) =&gt; console.log(key, value));</pre>
+    <p>说明：Map可以直接用for...of遍历，每一项是[键, 值]数组，也可使用keys()、values()、entries()</p>
+    
+    <h3>初始化与转换</h3>
+    <pre>const m = new Map([["a", 1], ["b", 2]]);
+Object.fromEntries(m);           // { a: 1, b: 2 }
+new Map(Object.entries({ x: 1 }));</pre>
+    <p>说明：Map可以由二维数组创建，并且能与对象通过entries和fromEntries互相转换</p>
+    
+    <h2>2. Set</h2>
+    
+    <h3>创建与去重</h3>
+    <pre>const set = new Set([1, 2, 2, 3, 3]);
+set.size;           // 3
+[...set];           // [1, 2, 3]</pre>
+    <p>说明：Set是不重复值的集合，最常见用途是给数组去重</p>
+    
+    <h3>常用方法</h3>
+    <pre>set.add(4);
+set.has(2);     // true
+set.delete(1);
+set.clear();</pre>
+    <p>说明：add添加、has判断、delete删除、clear清空；重复add同一个值不会有变化</p>
+    
+    <h3>集合运算</h3>
+    <pre>const a = new Set([1, 2, 3]);
+const b = new Set([2, 3, 4]);
+[...a].filter(x =&gt; b.has(x));         // 交集 [2, 3]
+new Set([...a, ...b]);                 // 并集
+[...a].filter(x =&gt; !b.has(x));        // 差集 [1]</pre>
+    <p>说明：借助展开运算符和filter可以方便地实现交集、并集、差集</p>
+    
+    <h2>3. WeakMap 与 WeakSet</h2>
+    
+    <h3>弱引用</h3>
+    <pre>const cache = new WeakMap();
+let obj = { id: 1 };
+cache.set(obj, "附加数据");
+obj = null;  // 对象可被垃圾回收</pre>
+    <p>说明：WeakMap的键必须是对象且是弱引用，不阻止垃圾回收，适合给对象附加数据而不造成内存泄漏；不能遍历，没有size</p>
+    
+    <h2>查看输出</h2>
+    <p>打开控制台查看输出，浏览器按F12</p>
+    <script>
+        const map = new Map();
+        map.set("name", "张三");
+        map.set(1, "数字键");
+        console.log("get:", map.get("name"), "has:", map.has(1), "size:", map.size);
+        for (const [k, v] of map) {
+            console.log("遍历:", k, v);
+        }
+        const m = new Map([["a", 1], ["b", 2]]);
+        console.log("fromEntries:", Object.fromEntries(m));
+
+        const set = new Set([1, 2, 2, 3, 3]);
+        console.log("去重:", [...set]);
+        const a = new Set([1, 2, 3]);
+        const b = new Set([2, 3, 4]);
+        console.log("交集:", [...a].filter(x => b.has(x)));
+        console.log("并集:", [...new Set([...a, ...b])]);
+        console.log("差集:", [...a].filter(x => !b.has(x)));
+
+        const cache = new WeakMap();
+        const obj = { id: 1 };
+        cache.set(obj, "附加数据");
+        console.log("WeakMap:", cache.get(obj));
+    </script>
+</body>
+</html>

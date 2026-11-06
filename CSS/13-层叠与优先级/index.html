@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS层叠与优先级</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>CSS层叠与优先级</h1>
+    
+    <h3>1. 后者覆盖前者</h3>
+    <p class="same-a">样式相同优先级时，后写的生效（这行是绿色）</p>
+    <p>说明：优先级相同，样式表中靠后的规则覆盖靠前的</p>
+    
+    <h3>2. 选择器权重</h3>
+    <p id="weight-id" class="weight-class">id选择器权重高于class（这行是红色）</p>
+    <p>说明：权重大小：内联样式 &gt; id &gt; class/属性/伪类 &gt; 标签/伪元素 &gt; 通配符</p>
+    
+    <h3>3. 权重计算</h3>
+    <ul>
+        <li>内联样式：1,0,0,0</li>
+        <li>id选择器：0,1,0,0</li>
+        <li>class、属性、伪类：0,0,1,0</li>
+        <li>标签、伪元素：0,0,0,1</li>
+    </ul>
+    <p>说明：按位比较，高位大者胜出，不会进位；例如div.a.b（0,0,2,1）大于div p span a（0,0,0,4）</p>
+    
+    <h3>4. 内联样式</h3>
+    <p class="inline-demo" style="color: purple;">内联样式覆盖外部样式（这行是紫色）</p>
+    <p>说明：行内style权重很高，但难以维护，不推荐大量使用</p>
+    
+    <h3>5. !important</h3>
+    <p class="important-demo" style="color: purple;">!important压过内联样式（这行是橙色）</p>
+    <p>说明：!important会无视权重，仅在覆盖第三方样式等特殊场景使用，滥用会让样式难以维护</p>
+    
+    <h3>6. 继承</h3>
+    <div class="inherit-parent">
+        <p class="inherit-child">子元素继承了父元素的文字颜色和字体大小</p>
+    </div>
+    <p>说明：color、font-*、line-height等文本属性会继承；border、margin、padding、background不会继承</p>
+    
+    <h3>7. 控制继承</h3>
+    <div class="inherit-parent">
+        <p class="inherit-none">inherit/initial/unset可显式控制（这行恢复默认颜色）</p>
+    </div>
+    <p>说明：inherit强制继承，initial重置为初始值，unset表示能继承则继承、否则重置</p>
+    
+    <h3>8. 样式来源顺序</h3>
+    <p>说明：浏览器默认样式 &lt; 用户样式 &lt; 作者样式；加上!important后顺序反过来。编写时尽量用class，保持低权重</p>
+</body>
+</html>

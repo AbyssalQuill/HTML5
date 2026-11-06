@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS变量与calc</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>CSS变量与calc</h1>
+    
+    <h3>1. 定义与使用变量</h3>
+    <div class="var-box">使用变量的盒子</div>
+    <p>说明：在:root中用--名称定义变量，用var(--名称)读取，改一处全局生效</p>
+    
+    <h3>2. 变量默认值</h3>
+    <div class="var-fallback">变量未定义时使用默认值</div>
+    <p>说明：var(--未定义变量, 默认值)，变量不存在时使用第二个参数</p>
+    
+    <h3>3. 局部变量覆盖</h3>
+    <div class="theme-a"><span class="chip">主题A</span></div>
+    <div class="theme-b"><span class="chip">主题B</span></div>
+    <p>说明：变量遵循继承和层叠，在某个元素上重新定义，只影响它和它的后代</p>
+    
+    <h3>4. calc()计算</h3>
+    <div class="calc-box">宽度：100% - 40px</div>
+    <p>说明：calc()可以混合不同单位做加减乘除，运算符两侧必须有空格</p>
+    
+    <h3>5. min()、max()、clamp()</h3>
+    <div class="clamp-box">宽度：clamp(200px, 50%, 400px)</div>
+    <p>说明：clamp(最小值, 理想值, 最大值)让数值在范围内变化，常用于响应式字体和宽度</p>
+    
+    <h3>6. 配合calc使用变量</h3>
+    <div class="space-box"><div class="inner">间距由变量倍数得出</div></div>
+    <p>说明：变量可以放进calc()，如calc(var(--gap) * 2)，方便统一管理间距</p>
+</body>
+</html>
