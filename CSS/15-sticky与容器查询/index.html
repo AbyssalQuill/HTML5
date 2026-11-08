@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS sticky与容器查询</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>CSS sticky与容器查询</h1>
+    
+    <h3>1. position: sticky 粘性定位</h3>
+    <div class="scroll-box">
+        <div class="sticky-head">我是粘性标题，滚动时吸附在顶部</div>
+        <p class="filler">内容1</p>
+        <p class="filler">内容2</p>
+        <p class="filler">内容3</p>
+        <p class="filler">内容4</p>
+        <p class="filler">内容5</p>
+        <p class="filler">内容6</p>
+    </div>
+    <p>说明：sticky元素平时正常排布，滚动到设置的top位置时吸附；必须指定top等偏移值，且祖先元素不能有overflow:hidden截断</p>
+    
+    <h3>2. 粘性表头</h3>
+    <div class="scroll-box">
+        <table class="sticky-table">
+            <thead><tr><th>序号</th><th>名称</th></tr></thead>
+            <tbody>
+                <tr><td>1</td><td>苹果</td></tr>
+                <tr><td>2</td><td>香蕉</td></tr>
+                <tr><td>3</td><td>橙子</td></tr>
+                <tr><td>4</td><td>葡萄</td></tr>
+                <tr><td>5</td><td>西瓜</td></tr>
+                <tr><td>6</td><td>草莓</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <p>说明：给th设置position:sticky和top:0，长表格滚动时表头始终可见</p>
+    
+    <h3>3. 容器查询</h3>
+    <div class="cq-wrap">
+        <div class="cq-card">
+            <div class="cq-img">图</div>
+            <div class="cq-text">卡片宽度够大时横向排列，较窄时纵向排列</div>
+        </div>
+    </div>
+    <div class="cq-wrap narrow">
+        <div class="cq-card">
+            <div class="cq-img">图</div>
+            <div class="cq-text">这个容器更窄，所以是纵向排列</div>
+        </div>
+    </div>
+    <p>说明：先给父元素设container-type:inline-size，再用@container (min-width:400px)根据父容器宽度（而非屏幕宽度）切换样式，组件可以复用在任意位置</p>
+    
+    <h3>4. 容器查询与媒体查询的区别</h3>
+    <p>说明：媒体查询看整个视口的大小，容器查询看组件所在容器的大小。同一个卡片放在侧边栏和主区域，能分别适应各自的空间</p>
+    
+    <h3>5. 容器单位</h3>
+    <p>说明：容器查询还带来cqw、cqh等单位，1cqw等于容器宽度的1%，可让字号和间距随容器缩放</p>
+    <hr>
+    <nav>
+        <a href="../14-%E7%8E%B0%E4%BB%A3CSS%E4%B8%8E%E6%9A%97%E8%89%B2%E6%A8%A1%E5%BC%8F/index.html">上一篇：现代CSS与暗色模式</a> | <a href="../../index.html">返回目录</a>
+    </nav>
+</body>
+</html>

@@ -1,0 +1,77 @@
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+h3 {
+    color: #666;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+p {
+    color: #555;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+.link-demo {
+    color: #4361ee;
+}
+.link-demo:hover {
+    color: #ef476f;
+    text-decoration: underline;
+}
+.link-demo:active {
+    color: #06d6a0;
+}
+.input-demo {
+    padding: 6px 10px;
+    margin: 4px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+}
+.input-demo:focus {
+    border-color: #4361ee;
+    outline: none;
+}
+.input-demo:disabled {
+    background-color: #eee;
+}
+.input-demo:read-only {
+    background-color: #fffbe6;
+}
+.list-demo li:first-child {
+    color: #ef476f;
+}
+.list-demo li:last-child {
+    color: #4361ee;
+}
+.list-demo li:nth-child(even) {
+    background-color: #f0f0f0;
+}
+.not-demo li:not(.skip) {
+    color: #06d6a0;
+    font-weight: bold;
+}
+.quote::before {
+    content: "“";
+    color: #ef476f;
+    font-size: 24px;
+}
+.quote::after {
+    content: "”";
+    color: #ef476f;
+    font-size: 24px;
+}
+.first-demo::first-letter {
+    font-size: 32px;
+    color: #ef476f;
+    font-weight: bold;
+}
+.ph-demo::placeholder {
+    color: #ef476f;
+}
+.sel-demo::selection {
+    background-color: #ffd166;
+    color: #333;
+}

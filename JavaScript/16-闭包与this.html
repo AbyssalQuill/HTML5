@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 闭包与this</title>
+</head>
+<body>
+    <h1>JavaScript 闭包与this</h1>
+    
+    <h2>1. 闭包</h2>
+    
+    <h3>什么是闭包</h3>
+    <pre>function createCounter() {
+    let count = 0;
+    return function () {
+        count++;
+        return count;
+    };
+}
+const counter = createCounter();
+counter();  // 1
+counter();  // 2</pre>
+    <p>说明：内部函数可以访问外部函数的变量，即使外部函数已经执行完毕，这个组合就是闭包</p>
+    
+    <h3>闭包的私有变量</h3>
+    <pre>function createAccount(balance) {
+    return {
+        deposit(n) { balance += n; return balance; },
+        getBalance() { return balance; }
+    };
+}
+const account = createAccount(100);
+account.deposit(50);  // 150
+account.balance;      // undefined</pre>
+    <p>说明：外部无法直接访问balance，只能通过返回的方法操作，实现数据私有</p>
+    
+    <h3>循环中的闭包陷阱</h3>
+    <pre>for (var i = 0; i &lt; 3; i++) {
+    setTimeout(() =&gt; console.log(i), 0);  // 3 3 3
+}
+for (let j = 0; j &lt; 3; j++) {
+    setTimeout(() =&gt; console.log(j), 0);  // 0 1 2
+}</pre>
+    <p>说明：var没有块级作用域，三个回调共享同一个i；let每次循环创建新的绑定</p>
+    
+    <h2>2. this 指向</h2>
+    
+    <h3>对象方法中的this</h3>
+    <pre>const user = {
+    name: "张三",
+    sayHi() { return "你好，" + this.name; }
+};
+user.sayHi();  // "你好，张三"</pre>
+    <p>说明：作为对象方法调用时，this指向调用它的对象</p>
+    
+    <h3>丢失this</h3>
+    <pre>const fn = user.sayHi;
+fn();  // this不再是user</pre>
+    <p>说明：把方法赋给变量后单独调用，this不再指向原对象（严格模式下是undefined）</p>
+    
+    <h3>箭头函数的this</h3>
+    <pre>const timer = {
+    seconds: 0,
+    start() {
+        setInterval(() =&gt; { this.seconds++; }, 1000);
+    }
+};</pre>
+    <p>说明：箭头函数没有自己的this，沿用外层的this，适合回调；不要用箭头函数写对象方法</p>
+    
+    <h3>call、apply、bind</h3>
+    <pre>function greet(greeting) {
+    return greeting + "，" + this.name;
+}
+greet.call({ name: "李四" }, "你好");
+greet.apply({ name: "王五" }, ["早上好"]);
+const bound = greet.bind({ name: "赵六" });
+bound("晚上好");</pre>
+    <p>说明：call和apply立即调用并指定this（参数分别是逐个传和数组传）；bind返回一个绑定了this的新函数</p>
+    
+    <h2>查看输出</h2>
+    <p>打开控制台查看输出，浏览器按F12</p>
+    <hr>
+    <nav>
+        <a href="15-%E6%A8%A1%E5%9D%97%E5%8C%96%E5%BC%80%E5%8F%91.html">上一篇：JavaScript 模块化开发</a> | <a href="../index.html">返回目录</a> | <a href="17-%E7%B1%BB%E4%B8%8E%E7%BB%A7%E6%89%BF.html">下一篇：JavaScript 类与继承</a>
+    </nav>
+    <script>
+        function createCounter() {
+            let count = 0;
+            return function () {
+                count++;
+                return count;
+            };
+        }
+        const counter = createCounter();
+        console.log("计数器:", counter(), counter(), counter());
+
+        function createAccount(balance) {
+            return {
+                deposit(n) { balance += n; return balance; },
+                getBalance() { return balance; }
+            };
+        }
+        const account = createAccount(100);
+        console.log("存入50后:", account.deposit(50));
+        console.log("直接访问balance:", account.balance);
+
+        const user = {
+            name: "张三",
+            sayHi() { return "你好，" + this.name; }
+        };
+        console.log(user.sayHi());
+        const fn = user.sayHi;
+        console.log("丢失this:", fn());
+
+        function greet(greeting) {
+            return greeting + "，" + this.name;
+        }
+        console.log(greet.call({ name: "李四" }, "你好"));
+        console.log(greet.apply({ name: "王五" }, ["早上好"]));
+        console.log(greet.bind({ name: "赵六" })("晚上好"));
+    </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 日期与时间</title>
+</head>
+<body>
+    <h1>JavaScript 日期与时间</h1>
+    
+    <h2>1. 创建日期</h2>
+    
+    <h3>常见创建方式</h3>
+    <pre>new Date();                          // 当前时间
+new Date("2024-03-15");              // 字符串
+new Date(2024, 2, 15, 10, 30);       // 年、月、日、时、分
+new Date(1710000000000);             // 毫秒时间戳</pre>
+    <p>说明：注意月份从0开始，2代表3月；日期字符串建议使用ISO格式（YYYY-MM-DD）</p>
+    
+    <h3>时间戳</h3>
+    <pre>Date.now();
+new Date().getTime();</pre>
+    <p>说明：时间戳是1970年1月1日UTC起的毫秒数，适合计算时间差和比较先后</p>
+    
+    <h2>2. 读取与设置</h2>
+    
+    <h3>get 方法</h3>
+    <pre>const d = new Date(2024, 2, 15, 10, 30);
+d.getFullYear();  // 2024
+d.getMonth();     // 2（3月）
+d.getDate();      // 15（几号）
+d.getDay();       // 5（星期，0是周日）
+d.getHours();     // 10</pre>
+    <p>说明：getDate是几号，getDay是星期几，两者不要混淆；对应的set方法可修改各部分</p>
+    
+    <h3>日期计算</h3>
+    <pre>const d2 = new Date(2024, 0, 31);
+d2.setDate(d2.getDate() + 1);  // 2月1日</pre>
+    <p>说明：设置的值超出范围时会自动进位，用来做“加几天”很方便</p>
+    
+    <h3>计算时间差</h3>
+    <pre>const diff = new Date("2024-12-25") - new Date("2024-12-01");
+diff / (1000 * 60 * 60 * 24);  // 24天</pre>
+    <p>说明：两个Date相减得到毫秒差，再换算成需要的单位</p>
+    
+    <h2>3. 格式化输出</h2>
+    
+    <h3>toLocaleString</h3>
+    <pre>d.toLocaleDateString("zh-CN");
+d.toLocaleTimeString("zh-CN");
+d.toLocaleString("zh-CN", { hour12: false });</pre>
+    <p>说明：按地区习惯输出日期时间，无需手动拼接字符串</p>
+    
+    <h3>Intl.DateTimeFormat</h3>
+    <pre>new Intl.DateTimeFormat("zh-CN", {
+    year: "numeric", month: "long", day: "numeric", weekday: "long"
+}).format(d);</pre>
+    <p>说明：通过选项精确控制输出的格式，如“2024年3月15日星期五”</p>
+    
+    <h3>toISOString</h3>
+    <pre>d.toISOString();  // "2024-03-15T02:30:00.000Z"</pre>
+    <p>说明：输出UTC时间的标准格式，适合与服务器交互；本地显示用toLocale系列方法</p>
+    
+    <h2>查看输出</h2>
+    <p>打开控制台查看输出，浏览器按F12</p>
+    <hr>
+    <nav>
+        <a href="19-Map%E4%B8%8ESet.html">上一篇：JavaScript Map与Set</a> | <a href="../index.html">返回目录</a> | <a href="21-%E8%BF%AD%E4%BB%A3%E5%99%A8%E4%B8%8E%E7%94%9F%E6%88%90%E5%99%A8.html">下一篇：JavaScript 迭代器与生成器</a>
+    </nav>
+    <script>
+        const d = new Date(2024, 2, 15, 10, 30);
+        console.log("年月日:", d.getFullYear(), d.getMonth() + 1, d.getDate());
+        console.log("星期(0是周日):", d.getDay());
+        console.log("时间戳是数字:", typeof Date.now());
+
+        const d2 = new Date(2024, 0, 31);
+        d2.setDate(d2.getDate() + 1);
+        console.log("1月31日加1天:", d2.getMonth() + 1 + "月" + d2.getDate() + "日");
+
+        const diff = new Date("2024-12-25") - new Date("2024-12-01");
+        console.log("相差天数:", diff / (1000 * 60 * 60 * 24));
+
+        console.log("本地日期:", d.toLocaleDateString("zh-CN"));
+        console.log("Intl格式:", new Intl.DateTimeFormat("zh-CN", {
+            year: "numeric", month: "long", day: "numeric", weekday: "long"
+        }).format(d));
+    </script>
+</body>
+</html>

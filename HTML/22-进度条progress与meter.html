@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5进度条progress与度量meter</title>
+</head>
+<body>
+    <h1>HTML5进度条progress与度量meter</h1>
+    
+    <h2>1. progress 进度条</h2>
+    
+    <h3>确定进度</h3>
+    <progress value="70" max="100">70%</progress>
+    <p>说明：value为当前值，max为最大值（默认1），适合上传、下载、加载等任务</p>
+    
+    <h3>不确定进度</h3>
+    <progress>加载中</progress>
+    <p>说明：省略value表示进度未知，浏览器会显示循环动画</p>
+    
+    <h3>配合label说明</h3>
+    <label for="file-progress">上传进度：</label>
+    <progress id="file-progress" value="32" max="100">32%</progress>
+    <p>说明：用label关联progress，方便屏幕阅读器读出含义</p>
+    
+    <h2>2. meter 度量衡</h2>
+    
+    <h3>基本用法</h3>
+    <meter value="0.6">60%</meter>
+    <p>说明：meter表示已知范围内的标量值，如磁盘用量、评分，min默认0，max默认1</p>
+    
+    <h3>指定范围</h3>
+    <meter value="75" min="0" max="100">75</meter>
+    <p>说明：min、max指定范围，value必须落在其间</p>
+    
+    <h3>low、high、optimum</h3>
+    <meter value="90" min="0" max="100" low="30" high="80" optimum="20">90</meter>
+    <p>说明：low、high划分低、中、高区间，optimum指定最佳值，浏览器据此用绿、黄、红显示</p>
+    
+    <h2>3. progress 与 meter 的区别</h2>
+    
+    <h3>对比</h3>
+    <ul>
+        <li>progress：任务完成了多少（会随时间增长）</li>
+        <li>meter：某个测量值在范围内的位置（如电量、评分、磁盘用量）</li>
+    </ul>
+    <p>说明：任务进度用progress，静态度量用meter，不要混用</p>
+    <hr>
+    <nav>
+        <a href="21-%E4%BA%A4%E4%BA%92%E5%85%83%E7%B4%A0details%E4%B8%8Edialog.html">上一篇：HTML5交互元素details与dialog</a> | <a href="../index.html">返回目录</a> | <a href="23-%E5%9B%BE%E7%89%87%E8%BF%9B%E9%98%B6figure%E4%B8%8Epicture.html">下一篇：HTML5图片进阶figure与picture</a>
+    </nav>
+</body>
+</html>

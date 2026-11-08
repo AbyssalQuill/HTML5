@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5无障碍基础与ARIA</title>
+</head>
+<body>
+    <h1>HTML5无障碍基础与ARIA</h1>
+    
+    <h2>1. 无障碍的基础</h2>
+    
+    <h3>优先使用语义化标签</h3>
+    <pre>
+&lt;button&gt;提交&lt;/button&gt;           &lt;!-- 推荐 --&gt;
+&lt;div onclick="..."&gt;提交&lt;/div&gt;     &lt;!-- 不推荐 --&gt;</pre>
+    <p>说明：原生button自带键盘操作和读屏语义，用div模拟需要自己补全，是无障碍问题的主要来源</p>
+    
+    <h3>图片替代文本</h3>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='80'%3E%3Crect width='120' height='80' fill='%23ccc'/%3E%3C/svg%3E" alt="灰色矩形">
+    <p>说明：有意义的图片写简洁的alt；纯装饰图片写alt=""（空值），读屏软件会跳过</p>
+    
+    <h3>表单关联 label</h3>
+    <label for="name">姓名：</label>
+    <input type="text" id="name" name="name">
+    <p>说明：label的for与input的id对应，点击文字即可聚焦输入框，读屏软件也能读出说明</p>
+    
+    <h3>语言与标题层级</h3>
+    <pre>&lt;html lang="zh-CN"&gt;</pre>
+    <p>说明：lang帮助读屏软件选择正确发音；标题h1到h6应按层级顺序使用，不要为了字号跳级</p>
+    
+    <h2>2. ARIA 属性</h2>
+    
+    <h3>第一原则</h3>
+    <p>说明：能用原生HTML元素就不用ARIA。ARIA只改变读屏软件看到的语义，不会添加键盘行为</p>
+    
+    <h3>aria-label</h3>
+    <button aria-label="关闭">×</button>
+    <p>说明：当按钮只有图标或符号，没有可读文字时，用aria-label提供名称</p>
+    
+    <h3>aria-labelledby 与 aria-describedby</h3>
+    <h4 id="dialog-title">删除确认</h4>
+    <div role="group" aria-labelledby="dialog-title" aria-describedby="dialog-desc">
+        <p id="dialog-desc">删除后无法恢复，确定继续吗？</p>
+    </div>
+    <p>说明：aria-labelledby引用另一个元素的文字作为名称，aria-describedby引用补充说明</p>
+    
+    <h3>aria-expanded</h3>
+    <button aria-expanded="false" aria-controls="menu">菜单</button>
+    <ul id="menu" hidden>
+        <li>首页</li>
+        <li>关于</li>
+    </ul>
+    <p>说明：aria-expanded表示所控制的区域是展开还是收起，需要用JavaScript同步修改它</p>
+    
+    <h3>aria-hidden</h3>
+    <button><span aria-hidden="true">★</span> 收藏</button>
+    <p>说明：aria-hidden="true"让读屏软件忽略装饰性内容；不要用在可聚焦的元素上</p>
+    
+    <h3>role 属性</h3>
+    <div role="alert">表单提交失败，请检查输入</div>
+    <p>说明：role给元素指定语义角色。alert会让读屏软件立刻朗读变化的内容，常见角色还有navigation、dialog、status等</p>
+    
+    <h2>3. 键盘与焦点</h2>
+    
+    <h3>tabindex</h3>
+    <div tabindex="0">可通过Tab聚焦的区域</div>
+    <p>说明：tabindex="0"加入Tab顺序；tabindex="-1"只能用脚本聚焦；不要使用大于0的值，会打乱自然顺序</p>
+    
+    <h3>跳过导航链接</h3>
+    <pre>
+&lt;a href="#main"&gt;跳到主要内容&lt;/a&gt;
+&lt;main id="main"&gt;...&lt;/main&gt;</pre>
+    <p>说明：让键盘用户可以跳过重复的导航区域</p>
+    
+    <h3>检查清单</h3>
+    <ul>
+        <li>仅用键盘能否完成所有操作</li>
+        <li>焦点是否始终可见</li>
+        <li>颜色对比度是否足够（正文建议不低于4.5:1）</li>
+        <li>不要只靠颜色传达信息</li>
+    </ul>
+    <p>说明：开发完成后，用Tab键走一遍页面是最简单有效的自测</p>
+    <hr>
+    <nav>
+        <a href="23-%E5%9B%BE%E7%89%87%E8%BF%9B%E9%98%B6figure%E4%B8%8Epicture.html">上一篇：HTML5图片进阶figure与picture</a> | <a href="../index.html">返回目录</a> | <a href="25-head%E4%B8%8Emeta%E6%A0%87%E7%AD%BE.html">下一篇：HTML5head与meta标签</a>
+    </nav>
+</body>
+</html>

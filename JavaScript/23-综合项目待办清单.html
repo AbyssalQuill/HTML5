@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 综合项目：待办清单</title>
+</head>
+<body>
+    <h1>JavaScript 综合项目：待办清单</h1>
+    
+    <h2>1. 功能说明</h2>
+    
+    <h3>涉及的知识点</h3>
+    <ul>
+        <li>DOM操作：创建、添加、删除元素</li>
+        <li>事件处理：表单提交、点击、事件委托</li>
+        <li>数组方法：push、filter、map</li>
+        <li>本地存储：localStorage保存数据</li>
+        <li>JSON：序列化与解析</li>
+    </ul>
+    <p>说明：这个小项目把前面学过的知识串起来，刷新页面后数据依然保留</p>
+    
+    <h2>2. 待办清单</h2>
+    
+    <form id="todo-form">
+        <input type="text" id="todo-input" placeholder="输入待办事项" required>
+        <button type="submit">添加</button>
+    </form>
+    <ul id="todo-list"></ul>
+    <p id="todo-count">共0项，已完成0项</p>
+    <button type="button" id="clear-done">清除已完成</button>
+    <p>说明：点击文字切换完成状态，点击删除按钮移除事项</p>
+    
+    <h2>3. 实现思路</h2>
+    
+    <h3>1. 数据用数组保存</h3>
+    <pre>let todos = JSON.parse(localStorage.getItem("todos") || "[]");</pre>
+    <p>说明：每一项是{ id, text, done }对象；读取不到时使用空数组</p>
+    
+    <h3>2. 数据变化后统一重新渲染</h3>
+    <pre>function update() {
+    localStorage.setItem("todos", JSON.stringify(todos));
+    render();
+}</pre>
+    <p>说明：任何增删改都先改数组，再保存并重绘，数据和界面始终一致</p>
+    
+    <h3>3. 事件委托</h3>
+    <pre>list.addEventListener("click", (e) =&gt; { /* 通过e.target判断点击对象 */ });</pre>
+    <p>说明：在父元素上统一监听，新增的子元素不需要重复绑定事件</p>
+    
+    <h3>4. 防止XSS</h3>
+    <pre>li.textContent = item.text;  // 不要使用innerHTML</pre>
+    <p>说明：用户输入的内容要用textContent写入页面，避免被当作HTML执行</p>
+    
+    <hr>
+    <nav>
+        <a href="22-%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF.html">上一篇：JavaScript 事件循环</a> | <a href="../index.html">返回目录</a> | <a href="24-Proxy%E4%B8%8EReflect.html">下一篇：JavaScript Proxy与Reflect</a>
+    </nav>
+    <script>
+        const form = document.getElementById("todo-form");
+        const input = document.getElementById("todo-input");
+        const list = document.getElementById("todo-list");
+        const count = document.getElementById("todo-count");
+        const clearBtn = document.getElementById("clear-done");
+
+        function load() {
+            try {
+                return JSON.parse(localStorage.getItem("todos") || "[]");
+            } catch (e) {
+                return [];
+            }
+        }
+        let todos = load();
+
+        function save() {
+            try {
+                localStorage.setItem("todos", JSON.stringify(todos));
+            } catch (e) {
+                console.warn("无法保存到本地存储:", e.name);
+            }
+        }
+
+        function render() {
+            list.innerHTML = "";
+            todos.forEach(item => {
+                const li = document.createElement("li");
+                li.dataset.id = item.id;
+                const span = document.createElement("span");
+                span.textContent = item.text;
+                span.dataset.action = "toggle";
+                if (item.done) span.style.textDecoration = "line-through";
+                const del = document.createElement("button");
+                del.type = "button";
+                del.textContent = "删除";
+                del.dataset.action = "delete";
+                li.append(span, del);
+                list.append(li);
+            });
+            const done = todos.filter(t => t.done).length;
+            count.textContent = "共" + todos.length + "项，已完成" + done + "项";
+        }
+
+        function update() {
+            save();
+            render();
+        }
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const text = input.value.trim();
+            if (!text) return;
+            todos.push({ id: Date.now(), text: text, done: false });
+            input.value = "";
+            update();
+        });
+
+        list.addEventListener("click", (e) => {
+            const action = e.target.dataset.action;
+            if (!action) return;
+            const id = Number(e.target.closest("li").dataset.id);
+            if (action === "toggle") {
+                todos = todos.map(t => t.id === id ? { ...t, done: !t.done } : t);
+            } else if (action === "delete") {
+                todos = todos.filter(t => t.id !== id);
+            }
+            update();
+        });
+
+        clearBtn.addEventListener("click", () => {
+            todos = todos.filter(t => !t.done);
+            update();
+        });
+
+        render();
+    </script>
+</body>
+</html>

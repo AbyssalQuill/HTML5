@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5canvas与svg</title>
+</head>
+<body>
+    <h1>HTML5canvas与svg</h1>
+    
+    <h2>1. canvas 画布</h2>
+    
+    <h3>绘制矩形</h3>
+    <canvas id="c1" width="300" height="120">您的浏览器不支持canvas</canvas>
+    <pre>const ctx = canvas.getContext("2d");
+ctx.fillStyle = "#4361ee";
+ctx.fillRect(20, 20, 120, 80);
+ctx.strokeRect(160, 20, 120, 80);</pre>
+    <p>说明：先getContext("2d")获得画笔，再用fillRect填充、strokeRect描边；width和height要写在属性里，用CSS缩放会变形</p>
+    
+    <h3>绘制路径与圆</h3>
+    <canvas id="c2" width="300" height="120"></canvas>
+    <pre>ctx.beginPath();
+ctx.arc(150, 60, 40, 0, Math.PI * 2);
+ctx.fill();</pre>
+    <p>说明：beginPath开始路径，arc画圆弧（圆心x、y，半径，起止弧度），再fill或stroke绘制</p>
+    
+    <h3>绘制文字</h3>
+    <canvas id="c3" width="300" height="80"></canvas>
+    <pre>ctx.font = "24px sans-serif";
+ctx.fillText("Hello Canvas", 20, 50);</pre>
+    <p>说明：canvas是位图，画完后无法选中单个图形；适合游戏、图表、图像处理等需要大量绘制的场景</p>
+    
+    <h2>2. svg 矢量图</h2>
+    
+    <h3>基本图形</h3>
+    <svg width="300" height="120" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="20" width="100" height="80" fill="#4361ee"></rect>
+        <circle cx="190" cy="60" r="40" fill="#ef476f"></circle>
+        <line x1="250" y1="20" x2="290" y2="100" stroke="#06d6a0" stroke-width="4"></line>
+    </svg>
+    <pre>&lt;svg width="300" height="120"&gt;
+    &lt;rect x="20" y="20" width="100" height="80" fill="#4361ee"&gt;&lt;/rect&gt;
+    &lt;circle cx="190" cy="60" r="40" fill="#ef476f"&gt;&lt;/circle&gt;
+&lt;/svg&gt;</pre>
+    <p>说明：svg用标签描述图形，rect矩形、circle圆、line线、text文字、path路径，放大不失真</p>
+    
+    <h3>viewBox 缩放</h3>
+    <svg width="150" height="150" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="40" fill="#ffd166"></circle>
+    </svg>
+    <p>说明：viewBox定义内部坐标系，width和height决定显示大小，二者不同时图形会自动缩放，适合做自适应图标</p>
+    
+    <h3>svg 文字</h3>
+    <svg width="300" height="60" xmlns="http://www.w3.org/2000/svg">
+        <text x="20" y="40" font-size="28" fill="#333">SVG文字</text>
+    </svg>
+    <p>说明：svg里的文字仍然是文本，可被选中、搜索和复制</p>
+    
+    <h2>3. 如何选择</h2>
+    
+    <h3>对比</h3>
+    <ul>
+        <li>svg：图形数量少、需要缩放清晰、需要鼠标交互和CSS样式（图标、示意图）</li>
+        <li>canvas：图形数量大、需要频繁重绘（游戏、动画、数据可视化大数据量）</li>
+    </ul>
+    <p>说明：svg每个图形都是DOM节点，数量多了会变慢；canvas只有一块像素，性能稳定但需要自己管理交互</p>
+    <hr>
+    <nav>
+        <a href="25-head%E4%B8%8Emeta%E6%A0%87%E7%AD%BE.html">上一篇：HTML5head与meta标签</a> | <a href="../index.html">返回目录</a>
+    </nav>
+    <script>
+        const c1 = document.getElementById("c1").getContext("2d");
+        c1.fillStyle = "#4361ee";
+        c1.fillRect(20, 20, 120, 80);
+        c1.strokeRect(160, 20, 120, 80);
+
+        const c2 = document.getElementById("c2").getContext("2d");
+        c2.fillStyle = "#ef476f";
+        c2.beginPath();
+        c2.arc(150, 60, 40, 0, Math.PI * 2);
+        c2.fill();
+
+        const c3 = document.getElementById("c3").getContext("2d");
+        c3.font = "24px sans-serif";
+        c3.fillText("Hello Canvas", 20, 50);
+    </script>
+</body>
+</html>

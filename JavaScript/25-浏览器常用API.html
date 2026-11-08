@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 浏览器常用API</title>
+</head>
+<body>
+    <h1>JavaScript 浏览器常用API</h1>
+    
+    <h2>1. URL 与查询参数</h2>
+    
+    <h3>解析URL</h3>
+    <pre>const url = new URL("https://example.com/search?q=js&amp;page=2#top");
+url.hostname;  // "example.com"
+url.pathname;  // "/search"
+url.hash;      // "#top"</pre>
+    <p>说明：URL对象把网址拆成各个部分，比自己用字符串截取可靠</p>
+    
+    <h3>URLSearchParams</h3>
+    <pre>const params = new URLSearchParams("q=js&amp;page=2");
+params.get("q");          // "js"
+params.set("page", "3");
+params.toString();        // "q=js&amp;page=3"</pre>
+    <p>说明：读取和构造查询字符串，会自动处理编码</p>
+    
+    <h2>2. 观察器</h2>
+    
+    <h3>IntersectionObserver</h3>
+    <pre>const io = new IntersectionObserver((entries) =&gt; {
+    entries.forEach(e =&gt; console.log(e.isIntersecting));
+});
+io.observe(element);</pre>
+    <p>说明：监听元素是否进入视口，用于图片懒加载、无限滚动、滚动到某处触发动画，比监听scroll事件性能好</p>
+    
+    <h3>ResizeObserver</h3>
+    <pre>new ResizeObserver((entries) =&gt; {
+    console.log(entries[0].contentRect.width);
+}).observe(element);</pre>
+    <p>说明：元素尺寸变化时触发回调，可用于组件自适应</p>
+    
+    <h2>3. 其他实用API</h2>
+    
+    <h3>structuredClone 深拷贝</h3>
+    <pre>const copy = structuredClone({ a: [1, 2], d: new Date() });</pre>
+    <p>说明：深拷贝对象，支持Date、Map、Set等，不能拷贝函数；比JSON.parse(JSON.stringify())更可靠</p>
+    
+    <h3>matchMedia 媒体查询</h3>
+    <pre>window.matchMedia("(prefers-color-scheme: dark)").matches;</pre>
+    <p>说明：在JavaScript里判断媒体查询是否匹配，如是否暗色模式、屏幕宽度</p>
+    
+    <h3>剪贴板</h3>
+    <pre>await navigator.clipboard.writeText("要复制的文字");</pre>
+    <p>说明：需要在HTTPS或localhost下，并且通常由用户操作（如点击）触发</p>
+    
+    <h3>requestAnimationFrame</h3>
+    <pre>function step() {
+    // 更新动画
+    requestAnimationFrame(step);
+}
+requestAnimationFrame(step);</pre>
+    <p>说明：让浏览器在下一次重绘前调用回调，做动画比setTimeout更流畅，页面不可见时会自动暂停</p>
+    
+    <div id="observed" style="margin-top: 400px;">我是被观察的元素，向下滚动才会进入视口</div>
+    <p>说明：上面这个元素用于演示IntersectionObserver，滚动页面到它出现，控制台会输出</p>
+    
+    <h2>查看输出</h2>
+    <p>打开控制台查看输出，浏览器按F12</p>
+    <hr>
+    <nav>
+        <a href="24-Proxy%E4%B8%8EReflect.html">上一篇：JavaScript Proxy与Reflect</a> | <a href="../index.html">返回目录</a>
+    </nav>
+    <script>
+        const url = new URL("https://example.com/search?q=js&page=2#top");
+        console.log("hostname:", url.hostname, "pathname:", url.pathname, "hash:", url.hash);
+
+        const params = new URLSearchParams("q=js&page=2");
+        params.set("page", "3");
+        console.log("params:", params.get("q"), params.toString());
+
+        const original = { a: [1, 2], d: new Date(0) };
+        const copy = structuredClone(original);
+        copy.a.push(3);
+        console.log("深拷贝互不影响:", original.a.length, copy.a.length);
+
+        console.log("暗色模式:", window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => console.log("元素是否可见:", e.isIntersecting));
+        });
+        io.observe(document.getElementById("observed"));
+
+        new ResizeObserver((entries) => {
+            console.log("body宽度:", Math.round(entries[0].contentRect.width));
+        }).observe(document.body);
+
+        requestAnimationFrame(() => console.log("下一次重绘前被调用"));
+    </script>
+</body>
+</html>

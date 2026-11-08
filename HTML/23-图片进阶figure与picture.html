@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5图片进阶figure与picture</title>
+</head>
+<body>
+    <h1>HTML5图片进阶figure与picture</h1>
+    
+    <h2>1. figure 与 figcaption</h2>
+    
+    <h3>带标题的图片</h3>
+    <figure>
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='300' height='200' fill='%234CAF50'/%3E%3C/svg%3E" alt="绿色矩形">
+        <figcaption>图1：绿色矩形示例</figcaption>
+    </figure>
+    <p>说明：figure包裹独立的内容（图片、代码、图表等），figcaption是它的说明文字</p>
+    
+    <h3>包裹代码</h3>
+    <figure>
+        <pre>console.log('hello');</pre>
+        <figcaption>输出hello的JavaScript代码</figcaption>
+    </figure>
+    <p>说明：figure不限于图片，移走后不影响正文理解的内容都适合用它</p>
+    
+    <h2>2. 响应式图片</h2>
+    
+    <h3>srcset 与 sizes</h3>
+    <pre>
+&lt;img
+    src="small.jpg"
+    srcset="small.jpg 480w, large.jpg 1200w"
+    sizes="(max-width: 600px) 480px, 1200px"
+    alt="风景"&gt;</pre>
+    <p>说明：srcset提供多张不同宽度的图片，sizes告诉浏览器在不同视口下图片的显示宽度，浏览器据此挑选合适的一张，节省流量</p>
+    
+    <h3>picture 艺术指导</h3>
+    <pre>
+&lt;picture&gt;
+    &lt;source media="(max-width: 600px)" srcset="mobile.jpg"&gt;
+    &lt;source media="(min-width: 601px)" srcset="desktop.jpg"&gt;
+    &lt;img src="desktop.jpg" alt="风景"&gt;
+&lt;/picture&gt;</pre>
+    <p>说明：picture根据条件选择不同的图片，img是必需的兜底元素</p>
+    
+    <h3>picture 切换图片格式</h3>
+    <pre>
+&lt;picture&gt;
+    &lt;source type="image/avif" srcset="photo.avif"&gt;
+    &lt;source type="image/webp" srcset="photo.webp"&gt;
+    &lt;img src="photo.jpg" alt="照片"&gt;
+&lt;/picture&gt;</pre>
+    <p>说明：浏览器按顺序挑选第一个支持的格式，不支持则回退到img</p>
+    
+    <h2>3. 图片加载优化</h2>
+    
+    <h3>懒加载 loading</h3>
+    <pre>&lt;img src="photo.jpg" alt="照片" loading="lazy"&gt;</pre>
+    <p>说明：loading="lazy"让图片进入视口附近才加载，首屏图片不要加</p>
+    
+    <h3>指定宽高避免抖动</h3>
+    <pre>&lt;img src="photo.jpg" alt="照片" width="300" height="200"&gt;</pre>
+    <p>说明：提前声明宽高，浏览器能预留空间，避免图片加载后页面布局跳动</p>
+    <hr>
+    <nav>
+        <a href="22-%E8%BF%9B%E5%BA%A6%E6%9D%A1progress%E4%B8%8Emeter.html">上一篇：HTML5进度条progress与度量meter</a> | <a href="../index.html">返回目录</a> | <a href="24-%E6%97%A0%E9%9A%9C%E7%A2%8D%E5%9F%BA%E7%A1%80%E4%B8%8EARIA.html">下一篇：HTML5无障碍基础与ARIA</a>
+    </nav>
+</body>
+</html>
