@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Proxy与Reflect</title>
+</head>
+<body>
+    <h1>JavaScript Proxy与Reflect</h1>
+    
+    <h2>1. Proxy 代理</h2>
+    
+    <h3>基本用法</h3>
+    <pre>const target = { name: "张三" };
+const proxy = new Proxy(target, {
+    get(obj, key) {
+        console.log("读取", key);
+        return obj[key];
+    },
+    set(obj, key, value) {
+        console.log("设置", key, value);
+        obj[key] = value;
+        return true;
+    }
+});</pre>
+    <p>说明：Proxy包装一个对象，并通过handler拦截读取、赋值、删除等操作</p>
+    
+    <h3>数据校验</h3>
+    <pre>const person = new Proxy({}, {
+    set(obj, key, value) {
+        if (key === "age" &amp;&amp; typeof value !== "number") {
+            throw new TypeError("age必须是数字");
+        }
+        obj[key] = value;
+        return true;
+    }
+});</pre>
+    <p>说明：在set拦截器中校验数据，不合法就抛出错误，对象的使用者无需改变写法</p>
+    
+    <h3>默认值</h3>
+    <pre>const withDefault = new Proxy({}, {
+    get(obj, key) { return key in obj ? obj[key] : 0; }
+});</pre>
+    <p>说明：读取不存在的属性时返回默认值，常用于计数器等场景</p>
+    
+    <h2>2. Reflect</h2>
+    
+    <h3>与Proxy配合</h3>
+    <pre>const logged = new Proxy(target, {
+    get(obj, key, receiver) {
+        return Reflect.get(obj, key, receiver);
+    }
+});</pre>
+    <p>说明：Reflect提供与Proxy拦截器同名的方法，在拦截器里用它执行默认行为最规范</p>
+    
+    <h3>常用方法</h3>
+    <pre>Reflect.has(obj, "name");           // 等价于 "name" in obj
+Reflect.ownKeys(obj);               // 包含Symbol键的所有自有键
+Reflect.deleteProperty(obj, "age"); // 等价于 delete obj.age</pre>
+    <p>说明：Reflect把原本分散的操作符和Object方法统一成函数，返回布尔值而不是抛错</p>
+    
+    <h2>3. 应用场景</h2>
+    
+    <h3>响应式数据</h3>
+    <p>说明：Vue 3的响应式系统就基于Proxy：拦截set，在数据变化时自动通知视图更新</p>
+    
+    <h3>注意事项</h3>
+    <p>说明：Proxy有性能开销；代理对象和原对象不是同一个引用，比较时要小心；get和set拦截器要正确返回值（set必须返回true）</p>
+    
+    <h2>查看输出</h2>
+    <p>打开控制台查看输出，浏览器按F12</p>
+    <hr>
+    <nav>
+        <a href="23-%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE%E5%BE%85%E5%8A%9E%E6%B8%85%E5%8D%95.html">上一篇：JavaScript 综合项目：待办清单</a> | <a href="../index.html">返回目录</a> | <a href="25-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B8%B8%E7%94%A8API.html">下一篇：JavaScript 浏览器常用API</a>
+    </nav>
+    <script>
+        const target = { name: "张三" };
+        const proxy = new Proxy(target, {
+            get(obj, key, receiver) {
+                console.log("读取", String(key));
+                return Reflect.get(obj, key, receiver);
+            },
+            set(obj, key, value) {
+                console.log("设置", key, value);
+                obj[key] = value;
+                return true;
+            }
+        });
+        proxy.name;
+        proxy.age = 18;
+
+        const person = new Proxy({}, {
+            set(obj, key, value) {
+                if (key === "age" && typeof value !== "number") {
+                    throw new TypeError("age必须是数字");
+                }
+                obj[key] = value;
+                return true;
+            }
+        });
+        person.age = 20;
+        try {
+            person.age = "二十";
+        } catch (e) {
+            console.log("校验失败:", e.message);
+        }
+
+        const counter = new Proxy({}, {
+            get(obj, key) { return key in obj ? obj[key] : 0; }
+        });
+        counter.apple++;
+        console.log("默认值:", counter.apple, counter.banana);
+
+        console.log("Reflect.has:", Reflect.has(target, "name"));
+        console.log("Reflect.ownKeys:", Reflect.ownKeys(target));
+    </script>
+</body>
+</html>

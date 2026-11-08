@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5head与meta标签</title>
+</head>
+<body>
+    <h1>HTML5head与meta标签</h1>
+    
+    <h2>1. head 中的基础信息</h2>
+    
+    <h3>字符编码 charset</h3>
+    <pre>&lt;meta charset="UTF-8"&gt;</pre>
+    <p>说明：声明文档编码，必须放在head最前面（前1024字节内），否则中文可能乱码</p>
+    
+    <h3>视口 viewport</h3>
+    <pre>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</pre>
+    <p>说明：让移动端按设备宽度渲染，是响应式设计的前提，缺少它页面会被当作桌面宽度缩小显示</p>
+    
+    <h3>页面标题 title</h3>
+    <pre>&lt;title&gt;页面标题 - 站点名&lt;/title&gt;</pre>
+    <p>说明：显示在标签页和搜索结果中，每个页面应唯一且简明，建议60字符以内</p>
+    
+    <h2>2. SEO 相关</h2>
+    
+    <h3>页面描述 description</h3>
+    <pre>&lt;meta name="description" content="一句话介绍页面内容"&gt;</pre>
+    <p>说明：搜索引擎常把它显示在结果摘要里，建议控制在150字符以内</p>
+    
+    <h3>控制搜索引擎抓取 robots</h3>
+    <pre>&lt;meta name="robots" content="noindex, nofollow"&gt;</pre>
+    <p>说明：noindex不让收录，nofollow不跟踪页面内链接；默认是允许收录</p>
+    
+    <h3>规范链接 canonical</h3>
+    <pre>&lt;link rel="canonical" href="https://example.com/page"&gt;</pre>
+    <p>说明：同一内容有多个网址时，告诉搜索引擎哪个是主地址，避免重复内容</p>
+    
+    <h2>3. 社交分享与图标</h2>
+    
+    <h3>Open Graph</h3>
+    <pre>&lt;meta property="og:title" content="标题"&gt;
+&lt;meta property="og:description" content="描述"&gt;
+&lt;meta property="og:image" content="https://example.com/cover.jpg"&gt;
+&lt;meta property="og:url" content="https://example.com/page"&gt;</pre>
+    <p>说明：链接被分享到微信、微博、社交平台时，用来决定卡片显示的标题、描述和封面图</p>
+    
+    <h3>网站图标 favicon</h3>
+    <pre>&lt;link rel="icon" href="/favicon.ico"&gt;</pre>
+    <p>说明：显示在浏览器标签页的小图标</p>
+    
+    <h3>主题色 theme-color</h3>
+    <pre>&lt;meta name="theme-color" content="#4361ee"&gt;</pre>
+    <p>说明：移动端浏览器据此给地址栏等界面着色</p>
+    
+    <h2>4. 加载资源</h2>
+    
+    <h3>link 引入样式与预加载</h3>
+    <pre>&lt;link rel="stylesheet" href="style.css"&gt;
+&lt;link rel="preload" href="font.woff2" as="font" crossorigin&gt;
+&lt;link rel="dns-prefetch" href="//cdn.example.com"&gt;</pre>
+    <p>说明：preload提前加载关键资源，dns-prefetch提前解析域名，用于优化加载速度</p>
+    
+    <h3>script 的 defer 与 async</h3>
+    <pre>&lt;script src="app.js" defer&gt;&lt;/script&gt;
+&lt;script src="stat.js" async&gt;&lt;/script&gt;</pre>
+    <p>说明：defer等页面解析完再按顺序执行；async下载完立刻执行，顺序不定，适合独立脚本如统计</p>
+    <hr>
+    <nav>
+        <a href="24-%E6%97%A0%E9%9A%9C%E7%A2%8D%E5%9F%BA%E7%A1%80%E4%B8%8EARIA.html">上一篇：HTML5无障碍基础与ARIA</a> | <a href="../index.html">返回目录</a> | <a href="26-canvas%E4%B8%8Esvg.html">下一篇：HTML5canvas与svg</a>
+    </nav>
+</body>
+</html>

@@ -27,6 +27,8 @@
 - `21-迭代器与生成器.html` - 迭代器协议与 generator
 - `22-事件循环.html` - 宏任务、微任务与执行顺序
 - `23-综合项目待办清单.html` - 综合项目：待办清单
+- `24-Proxy与Reflect.html` - 代理与反射、数据校验
+- `25-浏览器常用API.html` - URL、观察器、structuredClone 等
 
 ## 配套文件
 
